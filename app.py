@@ -34,8 +34,11 @@ tab1, tab2 = st.tabs(["📊 Heatmap by Date", "📈 Level Trends by Station ID"]
 # Tab 1: Heatmap by Date
 with tab1:
     st.header("📊 Heatmap by Date")
-    unique_dates = pd.to_datetime(data['formatted_measurement_date']).dt.date.unique()
-    selected_date = st.selectbox("Select a Date", sorted(unique_dates))
+    
+    # Calendar-style date selection
+    min_date = pd.to_datetime(data['formatted_measurement_date']).min().date()
+    max_date = pd.to_datetime(data['formatted_measurement_date']).max().date()
+    selected_date = st.date_input("Select a Date", value=min_date, min_value=min_date, max_value=max_date)
 
     # Filter data for the selected date
     filtered_data = data[pd.to_datetime(data['formatted_measurement_date']).dt.date == selected_date]
